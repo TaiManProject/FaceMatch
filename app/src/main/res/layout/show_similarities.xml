@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="800px"
+        android:layout_height="1000px"
+        android:id="@+id/matchPerson"
+        android:layout_marginTop="100px"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Full"
+        android:id="@+id/btn_full"
+        android:layout_below="@+id/matchPerson"
+        android:layout_alignLeft="@+id/matchPerson"
+        android:layout_alignStart="@+id/matchPerson"
+        android:layout_marginTop="10px" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1/2"
+        android:id="@+id/btn_half"
+        android:layout_alignTop="@+id/btn_full"
+        android:layout_centerHorizontal="true" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1/4"
+        android:id="@+id/btn_quarter"
+        android:layout_alignTop="@+id/btn_half"
+        android:layout_alignRight="@+id/matchPerson"
+        android:layout_alignEnd="@+id/matchPerson" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="1/8"
+        android:id="@+id/btn_octant"
+        android:layout_alignBottom="@+id/btn_landmarks"
+        android:layout_alignLeft="@+id/btn_full"
+        android:layout_alignStart="@+id/btn_full" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Landmarks"
+        android:id="@+id/btn_landmarks"
+        android:layout_below="@+id/btn_quarter"
+        android:layout_alignRight="@+id/matchPerson"
+        android:layout_alignEnd="@+id/matchPerson"/>
+
+
+</RelativeLayout>

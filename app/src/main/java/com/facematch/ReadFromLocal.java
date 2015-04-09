@@ -50,7 +50,6 @@ public class ReadFromLocal extends Activity {
 
             @Override
             public void onClick(View v) {
-                // TODO Auto-generated method stub
                 Intent intent1 = new Intent(ReadFromLocal.this,
                         SelectPicActivity.class);
 //				startActivityForResult(intent1, TO_SELECT_PHOTO);

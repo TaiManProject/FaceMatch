@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
+import android.graphics.Point;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -79,6 +80,7 @@ public class SendImage extends AsyncTask<Bitmap, Integer, Result> {
                 }
                 result.setSynPhoto(BitmapFactory.decodeByteArray(data, 0, data.length));
                 for (int j = 0; j < numOfPerson; j++) {
+                    Person person = new Person();
                     length = dataInput.readInt();
                     Log.e("debug", "length:" + String.valueOf(length));
                     data = new byte[length];
@@ -88,7 +90,21 @@ public class SendImage extends AsyncTask<Bitmap, Integer, Result> {
                     }
                     String info = new String(data);
 //                    Log.e("debug", bytesToHex(data));
+                    person.setInfo(info);
                     Log.e("debug", info);
+
+                    length = dataInput.readInt();
+                    Log.e("debug", "length of similarities " + length);
+                    for(int k = 0; k < length; k++) {
+                        person.similarities.add(dataInput.readDouble());
+                    }
+
+                    length = dataInput.readInt() * 2;
+                    Log.e("debug", "length of landmarks " + length);
+                    for(int k = 0; k < length; k++) {
+                        dataInput.readInt();
+                        person.landmarks.add(dataInput.readInt());
+                    }
 
                     length = dataInput.readInt();
                     Log.e("debug", "length." + String.valueOf(length));
@@ -99,7 +115,7 @@ public class SendImage extends AsyncTask<Bitmap, Integer, Result> {
                         Log.e("debug", "dataReceived" + dataReceived + " of " + length);
                     }
 //                    dataInput.readInt();
-                    Person person = new Person(BitmapFactory.decodeByteArray(data, 0, data.length), info);
+                    person.setPhoto(BitmapFactory.decodeByteArray(data, 0, data.length));
                     result.addPerson(person);
                 }
                 socket.close();
