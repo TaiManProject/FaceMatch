@@ -7,6 +7,7 @@ import java.util.ArrayList;
 public class Result {
     Bitmap synPhoto;
     ArrayList<Person> persons;
+    int foundMethod;
 
     public Result() {
         this.synPhoto = null;
@@ -31,5 +32,13 @@ public class Result {
 
     public void addPerson(Person person) {
         persons.add(person);
+    }
+
+    public int getFoundMethod() {
+        return foundMethod;
+    }
+
+    public void setFoundMethod(int foundMethod) {
+        this.foundMethod = foundMethod;
     }
 }

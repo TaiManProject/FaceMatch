@@ -69,6 +69,7 @@ public class SendImage extends AsyncTask<Bitmap, Integer, Result> {
                 out.flush();
                 DataInputStream dataInput = new DataInputStream(socket.getInputStream());
                 numOfPerson = dataInput.readInt();
+                result.setFoundMethod(dataInput.readInt());
                 Log.e("debug", "numOfPerson" + String.valueOf(numOfPerson));
                 length = dataInput.readInt();
                 Log.e("debug", "length" + String.valueOf(length));
@@ -102,8 +103,7 @@ public class SendImage extends AsyncTask<Bitmap, Integer, Result> {
                     length = dataInput.readInt() * 2;
                     Log.e("debug", "length of landmarks " + length);
                     for(int k = 0; k < length; k++) {
-                        dataInput.readInt();
-                        person.landmarks.add(dataInput.readInt());
+                        person.landmarks.add((float)dataInput.readInt());
                     }
 
                     length = dataInput.readInt();
