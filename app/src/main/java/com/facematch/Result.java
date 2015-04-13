@@ -1,25 +1,23 @@
 package com.facematch;
 
-import android.graphics.Bitmap;
-
 import java.util.ArrayList;
 
 public class Result {
-    Bitmap synPhoto;
+    Person synPerson;
     ArrayList<Person> persons;
     int foundMethod;
 
     public Result() {
-        this.synPhoto = null;
+        this.synPerson = null;
         this.persons = new ArrayList<Person>();
     }
 
-    public Bitmap getSynPhoto() {
-        return synPhoto;
+    public Person getSynPerson() {
+        return synPerson;
     }
 
-    public void setSynPhoto(Bitmap synPhoto) {
-        this.synPhoto = synPhoto;
+    public void setSynPerson(Person synPhoto) {
+        this.synPerson = synPhoto;
     }
 
     public ArrayList<Person> getPersons() {
@@ -40,5 +38,10 @@ public class Result {
 
     public void setFoundMethod(int foundMethod) {
         this.foundMethod = foundMethod;
+    }
+
+    public void split() {
+        this.synPerson = this.persons.get(0);
+        this.persons.remove(0);
     }
 }

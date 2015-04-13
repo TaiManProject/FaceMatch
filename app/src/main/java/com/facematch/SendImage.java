@@ -5,7 +5,6 @@ import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
-import android.graphics.Point;
 
 import java.io.ByteArrayOutputStream;
 import java.io.DataInputStream;
@@ -71,21 +70,25 @@ public class SendImage extends AsyncTask<Bitmap, Integer, Result> {
                 numOfPerson = dataInput.readInt();
                 result.setFoundMethod(dataInput.readInt());
                 Log.e("debug", "numOfPerson" + String.valueOf(numOfPerson));
-                length = dataInput.readInt();
-                Log.e("debug", "length" + String.valueOf(length));
-                byte[] data = new byte[length];
-                int dataReceived = 0;
-                while (dataReceived < length) {
-                    dataReceived += dataInput.read(data, dataReceived, length - dataReceived);
-//                    Log.e("debug", "dataR" + String.valueOf(dataReceived));
-                }
-                result.setSynPhoto(BitmapFactory.decodeByteArray(data, 0, data.length));
+
+                // old read synPerson part.
+
+//                length = dataInput.readInt();
+//                Log.e("debug", "length" + String.valueOf(length));
+//                byte[] data = new byte[length];
+//                int dataReceived = 0;
+//                while (dataReceived < length) {
+//                    dataReceived += dataInput.read(data, dataReceived, length - dataReceived);
+////                    Log.e("debug", "dataR" + String.valueOf(dataReceived));
+//                }
+//                result.setSynPerson(BitmapFactory.decodeByteArray(data, 0, data.length));
+
                 for (int j = 0; j < numOfPerson; j++) {
                     Person person = new Person();
                     length = dataInput.readInt();
                     Log.e("debug", "length:" + String.valueOf(length));
-                    data = new byte[length];
-                    dataReceived = 0;
+                    byte[] data = new byte[length];
+                    int dataReceived = 0;
                     while (dataReceived < length) {
                         dataReceived += dataInput.read(data, dataReceived, length - dataReceived);
                     }
@@ -135,8 +138,9 @@ public class SendImage extends AsyncTask<Bitmap, Integer, Result> {
 
     @Override
     protected void onPostExecute(Result result) {
-        imageView.setImageBitmap(result.getSynPhoto());
-        Log.e("debug", "onPostExecute");
-//        imageView.setImageBitmap(result.getPersons().get(2).getPhoto());
+        result.split();
+        imageView.setImageBitmap(result.getSynPerson().getPhoto());
+//        Log.e("debug", "onPostExecute");
+//        imageView.setImageBitmap(result.getPersons().get(0).getPhoto());
     }
 }
