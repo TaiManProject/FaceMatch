@@ -22,6 +22,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -31,6 +32,8 @@ public class ResultPage extends Activity implements OnClickListener {
     private final String TAG = "ResultPage";
     private int selectedPictureId;
 
+    private int isShowing = 0;
+
     private boolean isSketch;
     private int isSketchInt;
 
@@ -39,18 +42,24 @@ public class ResultPage extends Activity implements OnClickListener {
     private ImageView pic1;
     private ImageView pic2;
     private ImageView pic3;
+    private ImageView pic4;
+    private ImageView pic5;
     private ImageView testingImageView;
+    private ImageView imgFoundMethod;
 
     private String info;
     private String info1;
     private String info2;
     private String info3;
+    private String info4;
+    private String info5;
 
     private Bitmap person1Photo;
 
     private Result localresult;
     private ArrayList<Person> persons;
     private Person localPerson;
+    private Person localSynPerson;
     private View localView;
     private int intLocalButton;
 //    private Bitmap drawableBitmap;
@@ -64,7 +73,17 @@ public class ResultPage extends Activity implements OnClickListener {
     private Button btn_landmarks;
     private Button btn;
 
+    private TextView textView1;
+    private TextView textView2;
+    private TextView textView3;
+    private TextView textView4;
+    private TextView textView5;
+
     private ProgressBar progressBar;
+
+    public static String format(double value) {
+        return String.format("%.0f", value).toString();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,6 +94,9 @@ public class ResultPage extends Activity implements OnClickListener {
 
         imageView = (ImageView) findViewById(R.id.selectedPicture);
 //        testingImageView = (ImageView) findViewById(R.id.testingImageView);
+
+        imgFoundMethod = (ImageView) findViewById(R.id.foundMethod);
+
         selectAnotherButton = (Button) findViewById(R.id.selectAnother);
 
         synPhoto = (ImageView) findViewById(R.id.synPicture);
@@ -87,6 +109,16 @@ public class ResultPage extends Activity implements OnClickListener {
         pic2.setOnClickListener(this);
         pic3 = (ImageView) findViewById(R.id.pic3);
         pic3.setOnClickListener(this);
+        pic4 = (ImageView) findViewById(R.id.pic4);
+        pic4.setOnClickListener(this);
+        pic5 = (ImageView) findViewById(R.id.pic5);
+        pic5.setOnClickListener(this);
+
+        textView1 = (TextView) findViewById(R.id.textView1);
+        textView2 = (TextView) findViewById(R.id.textView2);
+        textView3 = (TextView) findViewById(R.id.textView3);
+        textView4 = (TextView) findViewById(R.id.textView4);
+        textView5 = (TextView) findViewById(R.id.textView5);
 
         Intent dataIntent = getIntent();
         String methodName = dataIntent.getStringExtra("MethodName");
@@ -113,9 +145,19 @@ public class ResultPage extends Activity implements OnClickListener {
         else isSketchInt = 0;
 
 //        Connection connection = new Connection("147.8.45.122", 54321, synPhoto, isSketchInt);
+//        Connection connection = new Connection("202.189.120.193", 54321, synPhoto, isSketchInt);
         Connection connection = new Connection("192.168.2.45", 54321, synPhoto, isSketchInt);
         connection.execute(bm);
         progressBar.setVisibility(View.VISIBLE);
+
+        imageView.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setClass(ResultPage.this, ReadFromLocal.class);
+                startActivity(intent);
+            }
+        });
 
         selectAnotherButton.setOnClickListener(new OnClickListener() {
 
@@ -127,25 +169,63 @@ public class ResultPage extends Activity implements OnClickListener {
             }
         });
 
+        synPhoto.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isShowing = (isShowing + 1) % 2;
+                if (isShowing == 1) {
+                    drawLandmarksSyn(localSynPerson, v);
+                } else {
+                    synPhoto.setImageBitmap(localSynPerson.getPhoto());
+                }
+            }
+        });
+
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.pic1:
-                info = info1;
+//                info = info1;
 //                showDialog(ResultPage.this);
-                localPerson = persons.get(0);
-                showPopupWindow(localPerson);
+                if (persons.size() >= 1) {
+                    localPerson = persons.get(0);
+                    showPopupWindow(localPerson);
+                }
 //                testingImageView.setImageBitmap(localPerson.getPhoto());
                 break;
             case R.id.pic2:
-                info = info2;
-                showDialog(ResultPage.this);
+//                info = info2;
+//                showDialog(ResultPage.this);
+                if (persons.size() >= 2) {
+                    localPerson = persons.get(1);
+                    showPopupWindow(localPerson);
+                }
                 break;
             case R.id.pic3:
                 info = info3;
-                showDialog(ResultPage.this);
+//                showDialog(ResultPage.this);
+                if (persons.size() >= 3) {
+                    localPerson = persons.get(2);
+                    showPopupWindow(localPerson);
+                }
+                break;
+            case R.id.pic4:
+                info = info4;
+//                showDialog(ResultPage.this);
+                if (persons.size() >= 4) {
+                    localPerson = persons.get(3);
+                    showPopupWindow(localPerson);
+                }
+                break;
+            case R.id.pic5:
+                info = info5;
+//                showDialog(ResultPage.this);
+                if (persons.size() >= 5) {
+                    localPerson = persons.get(4);
+                    showPopupWindow(localPerson);
+                }
                 break;
             case R.id.btn_full:
                 intLocalButton = 1;
@@ -163,11 +243,13 @@ public class ResultPage extends Activity implements OnClickListener {
                 intLocalButton = 8;
                 drawSimilarities(intLocalButton, localPerson, localView);
                 break;
+            case R.id.btn_landmarks:
+                drawLandmarks(localPerson, localView);
+                break;
             default:
                 finish();
                 break;
         }
-
     }
 
     private void showDialog(Context context) {
@@ -204,17 +286,65 @@ public class ResultPage extends Activity implements OnClickListener {
         pop.setOutsideTouchable(true);
         // 设置此参数获得焦点，否则无法点击
         pop.setFocusable(true);
-        ImageView matchPerson = (ImageView) view.findViewById(R.id.matchPerson);
+        final ImageView matchPerson = (ImageView) view.findViewById(R.id.matchPerson);
         Bitmap bitmap = person.getPhoto();
         matchPerson.setImageBitmap(bitmap);
+
+        matchPerson.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                matchPerson.setImageBitmap(localPerson.getPhoto());
+            }
+        });
 
         if (pop.isShowing()) {
             // 隐藏窗口，如果设置了点击窗口外小时即不需要此方式隐藏
             pop.dismiss();
         } else {
             // 显示窗口
-            pop.showAtLocation(view, Gravity.NO_GRAVITY, 100, 100);
+            pop.showAtLocation(view, Gravity.NO_GRAVITY, 250, 300);
         }
+    }
+
+    private void drawLandmarks(Person person, View view) {
+        Bitmap drawableBitmap = person.getPhoto().copy(Bitmap.Config.ARGB_8888, true);
+        Canvas canvas = new Canvas(drawableBitmap);
+        //实例一个画笔
+        Paint paint = new Paint();
+        //设置画笔颜色为红色
+        paint.setColor(Color.WHITE);
+        //----利用填充画布，刷屏
+        paint.setStyle(Paint.Style.FILL);
+
+        paint.setStrokeWidth((float) 1.5);
+
+        float[] floatArray = person.getLandmarks();
+
+        canvas.drawPoints(floatArray, paint);
+
+        ImageView matchPerson = (ImageView) view.findViewById(R.id.matchPerson);
+        matchPerson.setImageBitmap(drawableBitmap);
+    }
+
+    private void drawLandmarksSyn(Person person, View view) {
+        Bitmap drawableBitmap = person.getPhoto().copy(Bitmap.Config.ARGB_8888, true);
+        Canvas canvas = new Canvas(drawableBitmap);
+        //实例一个画笔
+        Paint paint = new Paint();
+        //设置画笔颜色为红色
+        paint.setColor(Color.WHITE);
+        //----利用填充画布，刷屏
+        paint.setStyle(Paint.Style.FILL);
+
+        paint.setStrokeWidth((float) 1.5);
+
+        float[] floatArray = person.getLandmarks();
+
+        canvas.drawPoints(floatArray, paint);
+
+        ImageView synPerson = (ImageView) view.findViewById(R.id.synPicture);
+        synPerson.setImageBitmap(drawableBitmap);
+
     }
 
     private void drawSimilarities(int intButton, Person person, View view) {
@@ -272,23 +402,39 @@ public class ResultPage extends Activity implements OnClickListener {
         matchPerson.setImageBitmap(drawableBitmap);
     }
 
+    private void showFoundResult(Result result) {
+        int foundMethod = result.getFoundMethod();
+        if (foundMethod == 0) imgFoundMethod.setImageResource(R.drawable.nomatch);
+        else if (foundMethod == 1) imgFoundMethod.setImageResource(R.drawable.potentialmatch);
+        else if (foundMethod == 2) imgFoundMethod.setImageResource(R.drawable.partialmatch);
+
+    }
+
     private void displayMatchPersons(ArrayList<Person> persons) {
         for (int i = 0; i < persons.size(); i++) {
             if (i == 0) {
                 pic1.setImageBitmap(persons.get(0).getPhoto());
                 info1 = persons.get(0).getInfo();
                 person1Photo = persons.get(0).getPhoto().copy(Bitmap.Config.ARGB_8888, true);
+                textView1.setText(persons.get(0).getInfo());
             } else if (i == 1) {
                 pic2.setImageBitmap(persons.get(1).getPhoto());
                 info2 = persons.get(1).getInfo();
+                textView2.setText(persons.get(1).getInfo());
             } else if (i == 2) {
                 pic3.setImageBitmap(persons.get(2).getPhoto());
                 info3 = persons.get(2).getInfo();
+                textView3.setText(persons.get(2).getInfo());
+            } else if (i == 3) {
+                pic4.setImageBitmap(persons.get(3).getPhoto());
+                info4 = persons.get(3).getInfo();
+                textView4.setText(persons.get(3).getInfo());
+            } else if (i == 4) {
+                pic5.setImageBitmap(persons.get(4).getPhoto());
+                info5 = persons.get(4).getInfo();
+                textView5.setText(persons.get(4).getInfo());
             }
         }
-    }
-    public static String format(double value) {
-        return String.format("%.0f", value).toString();
     }
 
     class Connection extends SendImage {
@@ -300,10 +446,12 @@ public class ResultPage extends Activity implements OnClickListener {
         @Override
         protected void onPostExecute(Result result) {
             super.onPostExecute(result);
+            localSynPerson = result.getSynPerson();
             localresult = result;
             persons = result.getPersons();
             displayMatchPersons(persons);
             progressBar.setVisibility(View.GONE);
+            showFoundResult(result);
         }
     }
 

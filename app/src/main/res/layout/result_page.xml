@@ -1,41 +1,130 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent" android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
     <ImageView
         android:id="@+id/selectedPicture"
-        android:layout_width="400px"
-        android:layout_height="500px"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true" />
 
+    <!--
+         <com.example.facematch.GalleryFlow
+        android:id="@+id/galleryFlow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/selectedPicture" />
+    -->
+
     <ScrollView
         android:id="@+id/scrollView1"
-        android:layout_width="400px"
-        android:layout_height="500px"
+        android:layout_width="75dp"
+        android:layout_height="200dp"
         android:layout_alignBottom="@+id/synPicture"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true">
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/selectedPicture">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <ImageView
-                android:id="@+id/pic1"
-                android:layout_width="400px"
-                android:layout_height="500px" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <ImageView
-                android:id="@+id/pic2"
-                android:layout_width="400px"
-                android:layout_height="500px" />
 
-            <ImageView
-                android:id="@+id/pic3"
-                android:layout_width="400px"
-                android:layout_height="500px" />
+                <ImageView
+                    android:id="@+id/pic1"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/non_photo" />
+
+                <TextView
+                    android:id="@+id/textView1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/pic2"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/non_photo" />
+
+                <TextView
+                    android:id="@+id/textView2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:id="@+id/pic3"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/non_photo" />
+
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:id="@+id/pic4"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/non_photo" />
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+
+                <ImageView
+                    android:id="@+id/pic5"
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:src="@drawable/non_photo" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 
@@ -45,14 +134,14 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/selectedPicture"
-        android:layout_marginLeft="22dp"
+        android:layout_marginLeft="11dp"
         android:text="Input photo"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ImageView
         android:id="@+id/synPicture"
-        android:layout_width="400px"
-        android:layout_height="500px"
+        android:layout_width="125dp"
+        android:layout_height="125dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/inputText" />
 
@@ -71,18 +160,18 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/synText"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40px"
+        android:layout_marginTop="18dp"
         android:text="SELECT Another" />
 
     <TextView
         android:id="@+id/recFaceText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/selectAnother"
+        android:layout_toEndOf="@+id/selectAnother"
+        android:layout_toRightOf="@+id/selectAnother"
         android:text="Recognized Face"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_below="@+id/scrollView1"
-        android:layout_alignLeft="@+id/scrollView1"
-        android:layout_alignStart="@+id/scrollView1" />
+        android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <ProgressBar
         android:id="@+id/progressBar"
@@ -90,8 +179,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/selectAnother"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="40px" />
+        android:layout_centerHorizontal="true" />
 
     <ImageView
         android:id="@+id/testingImageView"
@@ -100,4 +188,15 @@
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
+
+    <ImageView
+        android:id="@+id/foundMethod"
+        android:layout_width="300dp"
+        android:layout_height="75dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/progressBar"
+        android:layout_centerHorizontal="true" />
+
+
 </RelativeLayout>

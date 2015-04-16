@@ -50,9 +50,9 @@ public class SendImage extends AsyncTask<Bitmap, Integer, Result> {
     @Override
     protected Result doInBackground(Bitmap... bitmaps) {
         int count = bitmaps.length;
+        Result result = new Result();
         for (int i = 0; i < count && i < 1; ++i) {
             try {
-                Result result = new Result();
                 Socket socket = new Socket(ip, port);
                 DataOutputStream out = new DataOutputStream(socket.getOutputStream());
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -121,14 +121,15 @@ public class SendImage extends AsyncTask<Bitmap, Integer, Result> {
                     person.setPhoto(BitmapFactory.decodeByteArray(data, 0, data.length));
                     result.addPerson(person);
                 }
+                result.success = 1;
                 socket.close();
-                return result;
             } catch (IOException e) {
                 Log.e("debug", "IOException");
                 e.printStackTrace();
+                result.success = 0;
             }
         }
-        return null;
+        return result;
     }
 
     @Override
@@ -138,6 +139,9 @@ public class SendImage extends AsyncTask<Bitmap, Integer, Result> {
 
     @Override
     protected void onPostExecute(Result result) {
+        if (result.success == 0) {
+            return;
+        }
         result.split();
         imageView.setImageBitmap(result.getSynPerson().getPhoto());
 //        Log.e("debug", "onPostExecute");

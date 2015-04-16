@@ -6,9 +6,10 @@ public class Result {
     Person synPerson;
     ArrayList<Person> persons;
     int foundMethod;
+    int success;
 
     public Result() {
-        this.synPerson = null;
+        this.synPerson = new Person();
         this.persons = new ArrayList<Person>();
     }
 
